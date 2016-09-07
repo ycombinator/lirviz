@@ -1,0 +1,32 @@
+#cy {
+  width: 70%;
+  height: 80%;
+  float: left;
+}
+
+#details {
+  font-family: "Verdana", sans-serif;
+  font-size: 0.8rem;
+  background-color: #f0f0f0;
+  float: right;
+  width: 29%;
+  padding-left: 0.5em;
+  padding-bottom: 1em;
+  display: none;
+  border-style: dashed;
+  border-color: #ccc;
+}
+
+.details-header-name {
+  font-family: "Courier New", monospace;
+  vertical-align: middle;
+}
+
+.plugin-args, .conditional-expr {
+  font-family: "Courier New", monospace;
+  font-size: 0.8rem;
+}
+
+.plugin-arg-name {
+  vertical-align: top;
+}
