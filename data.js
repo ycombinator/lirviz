@@ -139,7 +139,7 @@ function convertApiResponsetoCYElements(apiResponse, cy) {
     directed: true
   });
 
-  cy.on('tap', 'node', e => {
+  cy.on('mouseover', 'node', e => {
     const node = e.cyTarget;
     const nodeType = node.data('name');
     const detailsDiv = $('#details');
