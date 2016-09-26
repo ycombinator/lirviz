@@ -4,7 +4,8 @@
 <script type="text/javascript" src="./grid.js"></script>
 
 <script type="text/javascript">
-  const grid = Grid.makeWith(document.getElementById('canvas'));
+  const canvas = document.getElementById('canvas');
+  const grid = Grid.makeWith(canvas);
 
   // Some nodes
   var grok = grid.addPluginNode(20, 20, 100, 60);
