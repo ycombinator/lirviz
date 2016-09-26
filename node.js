@@ -1,9 +1,12 @@
 const CURVE_RADIUS = 10;
 const IO_RADIUS = 6;
+const ARROWHEAD_HEIGHT = 10;
+const ARROWHEAD_WIDTH = 10;
 
 class Node {
-  constructor(ctx, topLeftX, topLeftY, width, height, inputs, outputs) {
+  constructor(ctx, name, topLeftX, topLeftY, width, height, inputs, outputs) {
     this.ctx      = ctx;
+    this.name     = name;
     this.topLeftX = topLeftX;
     this.topLeftY = topLeftY;
     this.width    = width;
@@ -51,6 +54,16 @@ class Node {
     this.ctx.stroke();
     this.ctx.fill();
 
+    // Render name
+    const textX = this.topLeftX + ( this.width / 2 );
+    const textY = this.topLeftY + ( this.height / 2 );
+    this.ctx.fillStyle = '#444';
+    this.ctx.font = '0.8em sans-serif';
+    this.ctx.textAlign = 'center';
+    this.ctx.textBaseline = 'middle';
+    this.ctx.fillText(this.name, textX, textY);
+    const textWidth = this.ctx.measureText(this.name); // TODO: Use this to resize node width if necessary
+
     var _drawIOs = (positions, ioX, initY) => {
       const numIO = Object.keys(positions).length;
       const ioYSpacing = ( bottomRightY - CURVE_RADIUS - ( this.topLeftY + CURVE_RADIUS ) ) / ( numIO + 1 );
@@ -71,7 +84,9 @@ class Node {
         if (numIO > 1) {
           this.ctx.fillStyle = '#444';
           this.ctx.font = '0.1em sans-serif';
-          this.ctx.fillText(positionLabel, ioX - 3, ioY + 3);
+          this.ctx.textAlign = 'center';
+          this.ctx.textBaseline = 'middle';
+          this.ctx.fillText(positionLabel, ioX, ioY);
         }
 
         ++ioNumber;
@@ -99,25 +114,40 @@ class Node {
 Node.INPUT_DEFAULT  = 1;
 Node.OUTPUT_DEFAULT = 1;
 
-class PluginNode extends Node {
-  constructor(ctx, topLeftX, topLeftY, width, height) {
-    super(ctx, topLeftX, topLeftY, width, height, [ Node.INPUT_DEFAULT ], [ Node.OUTPUT_DEFAULT ]);
+class InputPluginNode extends Node {
+  constructor(ctx, name, topLeftX, topLeftY, width, height) {
+    super(ctx, name, topLeftX, topLeftY, width, height, [], [ Node.OUTPUT_DEFAULT ]);
+  }
+}
+
+class FilterPluginNode extends Node {
+  constructor(ctx, name, topLeftX, topLeftY, width, height) {
+    super(ctx, name, topLeftX, topLeftY, width, height, [ Node.INPUT_DEFAULT ], [ Node.OUTPUT_DEFAULT ]);
   }
 }
 
 class IfNode extends Node {
   constructor(ctx, topLeftX, topLeftY, width, height) {
-    super(ctx, topLeftX, topLeftY, width, height, [ Node.INPUT_DEFAULT ], [ IfNode.OUTPUT_TRUE, IfNode.OUTPUT_FALSE ]);
+    super(ctx, 'if', topLeftX, topLeftY, width, height, [ Node.INPUT_DEFAULT ], [ IfNode.OUTPUT_TRUE, IfNode.OUTPUT_FALSE ]);
   }
 }
 
 IfNode.OUTPUT_TRUE = 'T';
 IfNode.OUTPUT_FALSE = 'F';
 
+class OutputPluginNode extends Node {
+  constructor(ctx, name, topLeftX, topLeftY, width, height) {
+    super(ctx, name, topLeftX, topLeftY, width, height, [ Node.INPUT_DEFAULT ], []);
+  }
+}
+
+
+// Private helper functions
+
 function _drawEdge(ctx, fromX, fromY, toX, toY) {
 
   // Make space for arrowhead
-  toX = toX - 20;
+  toX = toX - ARROWHEAD_WIDTH;
 
   ctx.beginPath();
   ctx.moveTo(fromX, fromY);
@@ -139,9 +169,9 @@ function _drawEdge(ctx, fromX, fromY, toX, toY) {
   // Arrow head
   ctx.beginPath();
   ctx.moveTo(toX, toY);
-  ctx.lineTo(toX, toY - 10); // Up
-  ctx.lineTo(toX + 20, toY); // Right + down
-  ctx.lineTo(toX, toY + 10); // Left + down
+  ctx.lineTo(toX, toY - ( ARROWHEAD_HEIGHT / 2 )); // Up
+  ctx.lineTo(toX + ARROWHEAD_WIDTH, toY); // Right + down
+  ctx.lineTo(toX, toY + ( ARROWHEAD_HEIGHT / 2 )); // Left + down
   ctx.lineTo(toX, toY); // Up
   ctx.fill();
 }

@@ -33,12 +33,20 @@ class Grid {
     }
   }
 
-  addPluginNode(topLeftX, topLeftY, width, height) {
-    return new PluginNode(this.ctx, topLeftX, topLeftY, width, height);
+  addInputPluginNode(name, topLeftX, topLeftY, width, height) {
+    return new InputPluginNode(this.ctx, name, topLeftX, topLeftY, width, height);
+  }
+
+  addFilterPluginNode(name, topLeftX, topLeftY, width, height) {
+    return new FilterPluginNode(this.ctx, name, topLeftX, topLeftY, width, height);
   }
 
   addIfNode(topLeftX, topLeftY, width, height) {
     return new IfNode(this.ctx, topLeftX, topLeftY, width, height);
+  }
+
+  addOutputPluginNode(name, topLeftX, topLeftY, width, height) {
+    return new OutputPluginNode(this.ctx, name, topLeftX, topLeftY, width, height);
   }
 }
 

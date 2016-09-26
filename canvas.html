@@ -7,14 +7,23 @@
   const canvas = document.getElementById('canvas');
   const grid = Grid.makeWith(canvas);
 
-  // Add some nodes
-  var grok = grid.addPluginNode(20, 20, 100, 60);
-  var conditional = grid.addIfNode(200, 20, 100, 60);
-  var mutate = grid.addPluginNode(380, 20, 100, 60);
-  var drop = grid.addPluginNode(380, 120, 100, 60);
+  // Add some input section nodes
+  var file = grid.addInputPluginNode('file', 20, 120, 100, 60);
+
+  // Add some filter section nodes
+  var grok = grid.addFilterPluginNode('grok', 200, 120, 100, 60);
+  var conditional = grid.addIfNode(380, 120, 100, 60);
+  var mutate = grid.addFilterPluginNode('mutate', 560, 70, 100, 60);
+  var drop = grid.addFilterPluginNode('drop', 560, 170, 100, 60);
+
+  // Add some output section nodes
+  var elasticsearch = grid.addOutputPluginNode('elasticsearch', 760, 70, 100, 60);
 
   // Add some connections
+  file.connect(grok);
   grok.connect(conditional);
   conditional.connect(IfNode.OUTPUT_TRUE, mutate);
   conditional.connect(IfNode.OUTPUT_FALSE, drop);
+  mutate.connect(elasticsearch);
+
 </script>
