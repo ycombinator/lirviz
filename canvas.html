@@ -1,22 +1,19 @@
 <canvas id="canvas" width="800" height="400"></canvas>
-<script type="text/javascript" src="./grid.js"></script>
+
 <script type="text/javascript" src="./node.js"></script>
-<script type="text/javascript" src="./edge.js"></script>
+<script type="text/javascript" src="./grid.js"></script>
+
 <script type="text/javascript">
-var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
+  const grid = Grid.makeWith(document.getElementById('canvas'));
 
-drawGrid();
+  // Some nodes
+  var grok = grid.addPluginNode(20, 20, 100, 60);
+  var conditional = grid.addIfNode(200, 20, 100, 60);
+  var mutate = grid.addPluginNode(380, 20, 100, 60);
+  var drop = grid.addPluginNode(380, 120, 100, 60);
 
-// Some nodes
-var grok = new PluginNode(20, 20, 100, 60);
-var conditional = new IfNode(200, 20, 100, 60);
-var mutate = new PluginNode(380, 20, 100, 60);
-var drop = new PluginNode(380, 120, 100, 60);
-
-// Some connections
-grok.connect(conditional);
-conditional.connect(IfNode.OUTPUT_TRUE, mutate);
-conditional.connect(IfNode.OUTPUT_FALSE, drop);
-
+  // Some connections
+  grok.connect(conditional);
+  conditional.connect(IfNode.OUTPUT_TRUE, mutate);
+  conditional.connect(IfNode.OUTPUT_FALSE, drop);
 </script>
