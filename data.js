@@ -1,5 +1,5 @@
 const xDistance = 120;
-const yDistance = 150;
+const yDistance = 60;
 
 function makeDetailsHeader(type, name) {
   return $('<h3>').addClass('details-header')
@@ -75,7 +75,7 @@ function convertApiResponsetoCYElements(apiResponse, cy) {
         label: vertex.name === 'plugin' ? vertex.meta.plugin_name : vertex.name,
         name: vertex.name,
         meta: vertex.meta,
-        shape: 'roundrectangle'
+        shape: 'rectangle'
       }
     });
 
@@ -106,7 +106,7 @@ function convertApiResponsetoCYElements(apiResponse, cy) {
   //   name: 'breadthfirst',
   //   directed: true
   // });
-
+  //
   let maxX = 0;
   let maxY = 0;
   cy.elements().bfs({
@@ -119,7 +119,7 @@ function convertApiResponsetoCYElements(apiResponse, cy) {
             position.x = previousNode.position('x') + xDistance;
             position.y = previousNode.position('y');
           } else {
-            position.x = previousNode.position('x');
+            position.x = previousNode.position('x') + xDistance;
             position.y = previousNode.position('y') + yDistance;
           }
         } else {
